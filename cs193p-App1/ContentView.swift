@@ -12,7 +12,9 @@ struct ContentView: View {
     let emojis : Array<String> = ["👽", "😈", "👻", "🎃", "🤡", "💀", "☠️","🧚","👠", "🐶"]
     var body: some View {
         VStack{
-        cards
+            ScrollView{
+                cards
+            }
             Spacer()
             cardControls
     }
@@ -36,7 +38,7 @@ cardController(by: -1, symbol: "rectangle.stack.badge.minus.fill")
         LazyVGrid(columns: [GridItem(), GridItem()]){
             
             ForEach(0..<cardCount, id : \.self){ index in
-                CardView(content : emojis[index])
+                CardView(content : emojis[index]).aspectRatio(2/3, contentMode: .fit)
             }
             
             
