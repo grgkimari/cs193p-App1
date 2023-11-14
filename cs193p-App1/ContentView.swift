@@ -11,13 +11,12 @@ struct ContentView: View {
     @State var cardCount : Int = 4
     let emojis : Array<String> = ["👽", "😈", "👻", "🎃", "🤡", "💀", "☠️","🧚","👠", "🐶"]
     var body: some View {
-        VStack{
+    
             ScrollView{
                 cards
             }
-            Spacer()
-            cardControls
-    }
+            
+    
         
     }
     func cardController(by offset : Int , symbol : String) -> some View{
@@ -35,9 +34,9 @@ cardController(by: -1, symbol: "rectangle.stack.badge.minus.fill")
         cardController(by: 1 , symbol: "rectangle.stack.badge.plus.fill")
     }
     var cards : some View {
-        LazyVGrid(columns: [GridItem(), GridItem()]){
+        LazyVGrid(columns: [GridItem(.adaptive(minimum: 85))]){
             
-            ForEach(0..<cardCount, id : \.self){ index in
+            ForEach(emojis.indices, id : \.self){ index in
                 CardView(content : emojis[index]).aspectRatio(2/3, contentMode: .fit)
             }
             
