@@ -18,11 +18,15 @@ struct GameLogicModel<CardContent>{
             cards.append(Card(content: cardContent))
         }
     }
-    func chooseCard(card : Card){
+    func chooseCard(_ card : Card){
         
     }
+    
+    mutating func shuffleCards(){
+        cards.shuffle()
+    }
     struct Card {
-        var isFaceUp : Bool = false
+        var isFaceUp : Bool = true
         var isMatched : Bool = false
         var content : CardContent
     }

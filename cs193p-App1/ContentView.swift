@@ -8,49 +8,31 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State var cardCount : Int = 4
-    let emojis : Array<String> = ["👽", "😈", "👻", "🎃", "🤡", "💀", "☠️","🧚","👠", "🐶"]
+    @ObservedObject var viewModel : EmojiGameViewModel
     var body: some View {
-    
+        VStack{
             ScrollView{
                 cards
             }
-            
-    
-        
-    }
-    func cardController(by offset : Int , symbol : String) -> some View{
-        Button(action: {
-            cardCount += offset
-        }, label:  {
-            Image(systemName: symbol)
-        }).disabled(cardCount + offset < 1 || cardCount + offset  > emojis.count)
+            Button("Shuffle"){
+                viewModel.shuffleCards()
+            }.font(.title3)
+        }
     }
     
-var cardRemover : some View {
-cardController(by: -1, symbol: "rectangle.stack.badge.minus.fill")
-}
-    var cardAdder : some View {
-        cardController(by: 1 , symbol: "rectangle.stack.badge.plus.fill")
-    }
+    
+
     var cards : some View {
         LazyVGrid(columns: [GridItem(.adaptive(minimum: 85))]){
             
-            ForEach(emojis.indices, id : \.self){ index in
-                CardView(content : emojis[index]).aspectRatio(2/3, contentMode: .fit)
+            ForEach(viewModel.cards.indices, id : \.self){ index in
+                CardView(content : viewModel.cards[index].content).aspectRatio(2/3, contentMode: .fit)
             }
             
             
-        }.padding()
+        }
     }
-    var cardControls : some View{
-        HStack{
-            cardRemover
-            Spacer()
-            cardAdder
-            
-        }.padding().imageScale(.large).font(.largeTitle)
-    }
+   
 }
 
 struct CardView : View {
@@ -61,8 +43,8 @@ struct CardView : View {
         ZStack{
             Group{
                 base.foregroundColor(.white)
-                base.strokeBorder(style: StrokeStyle(lineWidth: 4))
-                Text(content).font(.largeTitle)
+                base.strokeBorder(lineWidth: 2)
+                Text(content).font(.system(size: 200)).minimumScaleFactor(0.01).aspectRatio(1,contentMode: .fit)
             }.opacity(isFaceUp ? 1 : 0)
             base.fill().opacity(isFaceUp ? 0 : 1)
             
@@ -77,6 +59,6 @@ struct CardView : View {
 }
 
 #Preview {
-    ContentView()
+    ContentView(viewModel: EmojiGameViewModel())
     
 }
